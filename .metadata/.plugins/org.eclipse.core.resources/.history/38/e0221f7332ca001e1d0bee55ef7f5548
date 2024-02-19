@@ -1,0 +1,163 @@
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
+public class MainChipiChapa {
+
+	Scanner scan = new Scanner(System.in);
+	Random rand = new Random();
+	ArrayList<PT_ChipiChapa> arrChipiChapa = new ArrayList<PT_ChipiChapa>();
+
+	void menu() {
+		System.out.println("PT ChipiChapa");
+		System.out.println("================");
+		System.out.println("1. insert data karyawan");
+		System.out.println("2. view data karyawan");
+		System.out.println("3. update data karyawan");
+		System.out.println("4. delete data karyawan");
+
+	}
+
+	public String id() {
+		char firstChar = (char) (rand.nextInt(26) + 'A');
+		char secondChar = (char) (rand.nextInt(26) + 'A');
+		String randNumber = String.format("%04d", rand.nextInt(10000));
+		String result = firstChar + secondChar + "-" + randNumber;
+
+		return result;
+	}
+
+	boolean kodeUnik(String kode) {
+		for (int i = 0; i < arrChipiChapa.size(); i++) {
+			if (arrChipiChapa.get(i).kode.equals(kode)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	boolean alfabet(String nama) {
+		boolean checkNotAlfabet = false;
+		for (int i = 0; i < nama.length(); i++) {
+			if (Character.isLetter(nama.charAt(i)) == false) {
+				checkNotAlfabet = true;
+			}
+		}
+		if (checkNotAlfabet == true) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	void insert() {
+		String kode;
+		while (true) {
+			kode = id();
+			if (kodeUnik(kode) == true) {
+				break;
+			}
+		}
+
+		String nama;
+		while (true) {
+			System.out.println("Input nama karyawan [>=3]: ");
+			nama = scan.nextLine();
+			if (alfabet(nama) == true && nama.length() >= 3) {
+				break;
+			}
+		}
+
+		String jenisKelamin;
+		while (true) {
+			System.out.println("Input jenis kelamin [Laki-laki | Perempuan]: ");
+			jenisKelamin = scan.nextLine();
+			if (jenisKelamin.equals("Laki-laki")) {
+				break;
+			} else if (jenisKelamin.equals("Perempuan")) {
+				break;
+			}
+
+		}
+
+		String jabatan;
+		int gaji;
+		while (true) {
+			System.out.println("Input jabatan [Manager | Supervisor | Admin]: ");
+			jabatan = scan.nextLine();
+			if (jabatan.equals("Manager")) {
+				gaji = 8000000;
+				break;
+			} else if (jabatan.equals("Supervisor")) {
+				gaji = 6000000;
+				break;
+			} else if (jabatan.equals("Admin")) {
+				gaji = 4000000;
+				break;
+			}
+		}
+
+		int sameJabatan =0;
+		for(PT_ChipiChapa e : arrChipiChapa) {
+			if (e.jabatan.equals(jabatan)) {
+				sameJabatan++;
+			}
+		}
+		
+		Integer gajiKaryawan=0;
+		 if (sameJabatan % 3 == 0) {
+		        if (jabatan.equals("Manager")) {
+		            gajiKaryawan = (int) (gaji * 1.10);
+		        } else if (jabatan.equals("Supervisor")) {
+		            gajiKaryawan = (int) (gaji * 1.075); 
+		        } else if (jabatan.equals("Admin")) {
+		            gajiKaryawan = (int) (gaji * 1.05); 
+		        }
+		        System.out.println("Bonus Applied!");
+		    } else {
+		        gajiKaryawan = gaji;
+		    }
+		
+		PT_ChipiChapa chipiChapa = new PT_ChipiChapa(kode, nama, jenisKelamin, jabatan, gajiKaryawan);
+		arrChipiChapa.add(chipiChapa);
+		
+		System.out.println("Berhasil menambahkan karyawan dengan id "+kode);
+	}
+
+	void view() {
+
+	}
+
+	void update() {
+
+	}
+
+	void delete() {
+
+	}
+
+	public MainChipiChapa() {
+		while (true) {
+			menu();
+			System.out.print(">> ");
+			int pilih = scan.nextInt();
+			scan.nextLine();
+			if (pilih == 1) {
+				insert();
+			} else if (pilih == 2) {
+				view();
+			} else if (pilih == 3) {
+				update();
+			} else if (pilih == 4) {
+				delete();
+			}
+		}
+
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new MainChipiChapa();
+	}
+
+}
